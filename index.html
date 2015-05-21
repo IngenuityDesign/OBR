@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OBR</title>
+
+  <style type="text/css">
+
+  	body {
+  		padding: 0;
+  		margin: 0;
+  	}
+
+    .container {
+		width: 804px;
+    }
+
+    .top {
+    	height: 30px;
+    	margin-top: 40px;
+
+    	/*background-image: url(http://static1.1.sqspcdn.com/static/f/1057234/26199518/1430843352500/top.jpg);*/
+    	background-repeat: repeat-y;
+    	clear: both;
+    }
+
+    .left {
+    	width: 483px;
+    	float: left;
+    }
+
+    .middle {
+    	clear: both;
+    	/*background-color: #f0efe7;*/
+    	height: 471px;
+    	position: relative;
+    }
+
+    .middle .left.upper {
+    	/*background-image: url(http://static1.1.sqspcdn.com/static/f/1057234/26199515/1430843351477/inner.jpg);*/
+    	background-repeat: repeat-y;
+    	height: 331px;
+    }
+
+    .right {
+    	width: 320px;
+    	float: right;
+    	height: 489px;
+
+    	
+    }
+
+    .nav {
+		padding: 0;
+		margin: 0;
+    }
+
+    .nav li {
+    	padding: 0;
+    	list-style-type: none;
+        
+    }
+
+    .nav li a {
+        float: left;
+        height: 489px;
+        position: relative;
+
+        border-right: 1px solid #724512;
+        background-position: center bottom;
+        background-repeat: no-repeat;
+
+        display: block;
+    }
+
+    .nav li a span {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        width: 100%;
+
+    	height: 20px;
+    	background-color: white;
+
+    	text-align: center;
+
+    	text-decoration: none;
+    }
+
+    .nav li a span {
+    	font-size: 12px;
+    	color: #724512;
+    	text-transform: uppercase;
+    	line-height: 20px;
+    }
+
+    .nav li a:hover span,
+    .nav li a.focused span {
+        color: white;
+        background-color: #724512;
+    }
+
+    .nav li.architecture a {
+    	width: 133px;
+        border-left: 1px solid #724512;
+    	background-image: url(http://obrarchitecture.com/storage/home/architecture.jpg);
+    }
+
+    .nav li.architecture a:hover,
+    .nav li.architecture a.focused {
+        background-image: url(http://obrarchitecture.com/storage/home/architecture-color.jpg);   
+    }
+
+    .nav li.art a {
+    	width: 65px;
+    	background-image: url(http://obrarchitecture.com/storage/home/art.jpg);
+    }
+
+    .nav li.art a:hover,
+    .nav li.art a.focused {
+        background-image: url(http://obrarchitecture.com/storage/home/art-color.jpg);   
+    }
+
+    .nav li.event a {
+    	width: 80px;
+    	background-image: url(http://obrarchitecture.com/storage/home/event.jpg);
+    }
+
+    .nav li.event a:hover,
+    .nav li.event a.focused {
+        background-image: url(http://obrarchitecture.com/storage/home/event-color.jpg);   
+    }
+
+    .nav li.us a {
+    	width: 36px;
+    	border-right: 0px;
+        border-right: 1px solid #724512;
+    	background-image: url(http://obrarchitecture.com/storage/home/us.jpg);
+    }
+
+    .nav li.us a:hover,
+    .nav li.us a.focused {
+        background-image: url(http://obrarchitecture.com/storage/home/us-color.jpg);   
+    }
+
+  </style>
+</head>
+<body>
+
+  
+
+	<div class="top"></div>
+
+	<div class="middle">
+		<div class="container">
+
+			<div class="right">
+				<ul class="nav" id="image-nav">
+					<li class="architecture">
+						<a href="/architecture/"><span>Architecture</span></a>
+					</li>
+					<li class="art">
+						<a href="/art/"><span>Art</span></a>
+					</li>
+					<li class="event">
+						<a href="/event/"><span>Event</span></a>
+					</li>
+					<li class="us">
+						<a href="/us/"><span>Us</span></a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="left upper shrinks">
+			
+			</div>
+
+			<div class="left">
+				<img src="http://obrarchitecture.com/storage/home/logo.jpg" height="154" width="483">
+			</div>
+
+		</div>
+
+	</div>
+
+    <script>
+    (function(d) {
+        function easeInQuad (t) { return (t*t) * 4 };
+
+        var ease = easeInQuad;
+        //function ease(t) { return t; }
+
+        function pixelfy(str) { 
+            return str + 'px';
+        }
+
+        function shrink(element, target, duration, next, sync) {
+            next = next || function() {};
+            sync = sync || function() {};
+            duration = duration || 50;
+
+            if (target == undefined) return next('Invalid target');
+
+            var originalHeight = element.offsetHeight,
+                difference = originalHeight - target,
+                interval = difference / duration;
+
+            // We need the number of iterations that this will take for the easing function
+
+            var increment = 0.99 / duration,
+                iteration = 0;
+
+            var t = window.setInterval(function() {
+
+                iteration+=increment
+
+                var height = element.offsetHeight,
+                    //interval = interval * ease(),
+                    newHeight = height - ( interval * ease(iteration+=increment) );
+                if (newHeight < target) {
+                    element.style.height = pixelfy(target);    
+                    window.clearInterval(t);
+                    return next(element);
+                }
+                element.style.height = pixelfy(newHeight);
+            }, 16);
+        }
+
+        function doAnimation(next) {
+            var nav = d.getElementById('image-nav');
+            var li = nav.getElementsByTagName('a');
+
+            var shrinkElements = [];
+
+            for (var i = 0; i < li.length; i++) {
+
+                var $this = li[i];
+                shrinkElements.push($this);
+
+            }
+
+            var shrinks = d.getElementsByClassName('shrinks');
+            for (var i = 0; i < shrinks.length; i++) {
+                shrinkElements.push(shrinks[i]);
+                var shrinker = shrinks[i];
+            }
+
+            var lengthToShrink = shrinker.offsetHeight,
+                elementsFinished = 0,
+                totalElements = shrinkElements.length;
+
+            for (var x in shrinkElements) {
+                var $this = shrinkElements[x],
+                    shrinkHeight = $this.offsetHeight - lengthToShrink;
+
+                if (shrinkHeight < 1) shrinkHeight = 0;
+
+                shrink($this, shrinkHeight, 100, function() {
+                    elementsFinished++;
+                    if (elementsFinished >= totalElements) return next();
+                })
+            }
+
+        };
+
+        function navigateWithAnimate(e) {
+            if (!e) return;
+
+            var target = e.target || e.srcElement,
+                href = target.getAttribute('data-href');
+
+            target.className = 'focused';
+
+            doAnimation(function() {
+                window.setTimeout(function() {
+                    window.location.href = href;
+                }, 800);
+            });
+        };
+
+        var a = d.getElementById('image-nav').getElementsByTagName('a');
+
+        for (var i = 0; i < a.length; i++) {
+            var $this = a[i];
+            $this.setAttribute('data-href', $this.href);
+            $this.href = 'javascript: void(0);';
+            $this.onclick = navigateWithAnimate;
+
+        }
+    })(document);
+    </script>
+
+</body>
+</html>
